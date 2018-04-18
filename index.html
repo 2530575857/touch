@@ -20,6 +20,8 @@
           let p1 =document.getElementById('p1');
         let p2 =document.getElementById('p2')
         obox.addEventListener('touchstart',function(even){
+          console.log(even.targetTouches.length);
+            p1.innerText =even.targetTouches[0].clientX;
             if(even.targetTouches.length>=2){
               let a= even.targetTouches[0].clientX-even.targetTouches[1].clientX;
               let b= even.targetTouches[0].clientY-even.targetToucher[1].clientY;
