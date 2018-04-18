@@ -23,10 +23,8 @@
             if(even.targetTouches.length>=2){
               let a= even.targetTouches[0].clientX-even.targetTouches[1].clientX;
               let b= even.targetTouches[0].clientY-even.targetTouches[1].clientY;
-              
-              alert(b)
               let ang=Math.atan2(b, a)*180/Math.PI;
-              
+              alert(ang)
               
               let startAng=old_ang;
               function fnmove(even){
