@@ -22,6 +22,7 @@
           //2
           if(ev.targetTouches.length>=2){
             let a=ev.targetTouches[0].clientX-ev.targetTouches[1].clientX;
+            alert(a)
             let b=ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
             let Angle =atan2(b,a)/(Math.PI/180)
 
