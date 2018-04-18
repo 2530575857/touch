@@ -24,7 +24,8 @@
             let a=ev.targetTouches[0].clientX-ev.targetTouches[1].clientX;
            
             let b=ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
-            alert(atan(a/b)/(Math.PI/180))
+            alert(b)
+            alert(atan(a/b)*180/Math.PI)
             let Angle =atan2(b,a)*180/Math.PI
              
             function fnmove(ev){
