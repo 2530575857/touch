@@ -13,40 +13,37 @@
   </head>
   <body>
     <div class="box"></div>
-    <p id="p1"></p>
-    <p id="p2"></p>
     <script type="text/javascript">
       window.onload =function(){
-        let obox =document.querySelector('.box');
-          let old_ang=0;
-        obox.addEventListener('touchstart',function(even){
-            if(even.targetTouches.length>=2){
-              let a= even.targetTouches[0].clientX-even.targetTouches[1].clientX;
-              let b= even.targetTouches[0].clientY-even.targetTouches[1].clientY;
-              let ang=Math.atan2(b, a)*180/Math.PI;
-              
-              let startAng=old_ang;
-              function fnmove(even){
-                if(even.targetTouches.length>=2){
-                  let a= even.targetTouches[0].clientX-even.targetTouches[1].clientX;
-                  let b= even.targetTouches[0].clientY-even.targetTouches[1].clientY;
-                  let ang2=Math.atan2(b, a)*180/Math.PI;
-                  old_ang=startAng+ang2-ang;
-                  obox.style.transform=`rotate(${old_ang}deg)`;
-                }
+        let obox =document.querySelector('.box')
+        let Angles =0;
+        obox.addEventListener('touchstart',function(ev){
+          console.log(ev);
+          //2
+          if(ev.targetTouches.length>=2){
+            let a  =ev.targetTouches[0].clientX-ev.targetTouches[1].clientX
+            let b  =ev.targetTouches[0].clientY-ev.targetTouches[1].clientY
+            let Angle =atan2(b,a)/(Math.PI/180)
 
-                even.preventDefault();
-              }
-              function fnend(even){
-                obox.removeEventListener('touchmove',fnmove,false)
-                obox.removeEventListener('touchend',fnend,false)
-              }
+            function fnmove(ev){
+              //2
+              if (ev.targetTouches.length>=2) {
+                let a  =ev.targetTouches[0].clientX-ev.targetTouches[1].clientX
+                let b  =ev.targetTouches[0].clientY-ev.targetTouches[1].clientY
+                let Angle2 =atan2(b,a)/(Math.PI/180)
 
-              obox.addEventListener('touchmove',fnmove,false)
-              obox.addEventListener('touchend',fnend,false)
+                obox.style.transform=`rotate(${Angle-Angle2}deg)`; 
+              }
+              ev.preventDefault()
             }
-
-            even.preventDefault();
+            function fnend(ev){
+              obox.removeEventListener('touchmove',fnmove,false)
+              obox.removeEventListener('touchend',fnend,false)
+            }
+            obox.addEventListener('touchmove',fnmove,false)
+            obox.addEventListener('touchend',fnend,false)
+          }
+          ev.preventDefault()
         },false)
       }
     </script>
