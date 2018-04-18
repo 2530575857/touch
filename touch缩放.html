@@ -16,10 +16,11 @@
         window.onload =function(){
             let obox =document.querySelector("#box");
             obox.addEventListener('touchstart',function(ev){
+               let dis=0;
+               let w =obox.offsetWidth;
+               let h =obox.offsetHeight;
               if (ev.targetTouches.length>=2) {
-                let dis =Math.sqrt(Math.pow(ev.targetTouches[0].clientX-ev.targetTouches[1].clientX,2)+Math.pow(ev.targetTouches[0].clientY-ev.targetTouches[1].clientY,2))
-                let w =obox.offsetWidth;
-                let h =obox.offsetHeight;
+                dis =Math.sqrt(Math.pow(ev.targetTouches[0].clientX-ev.targetTouches[1].clientX,2)+Math.pow(ev.targetTouches[0].clientY-ev.targetTouches[1].clientY,2))
                 obox.addEventListener('touchmove',fnmove,false);
                 obox.addEventListener('touchend',fnend,false);
               }
