@@ -27,6 +27,7 @@
               let b= even.targetTouches[0].clientY-even.targetToucher[1].clientY;
               let ang =Math.atan2(b,a)/(Math.PI/180);
               p1.innerText =ang;
+              alert("1")
               
               obox.addEventListener('touchmove',fnmove,false)
               obox.addEventListener('touchend',fnend,false)
