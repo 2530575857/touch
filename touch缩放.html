@@ -18,18 +18,19 @@
             obox.addEventListener('touchstart',function(ev){
               if (ev.targetTouches.length>=2) {
                 let dis =Math.sqrt(Math.pow(ev.targetTouches[0].clientX-ev.targetTouches[1].clientX,2)+Math.pow(ev.targetTouches[0].clientY-ev.targetTouches[1].clientY,2))
-                alert(dis)
                 let w =obox.offsetWidth;
                 let h =obox.offsetHeight;
-                alert(h)
                 obox.addEventListener('touchmove',fnmove,false);
                 obox.addEventListener('touchend',fnend,false);
+                 ev.preventDefault();
               }
               function fnmove(ev){
                 if (ev.targetTouches.length>=2) {
                     let dis2 =Math.sqrt(Math.pow(ev.targetTouches[0].clientX-ev.targetTouches[1].clientX,2)+Math.pow(ev.targetTouches[0].clientY-ev.targetTouches[1].clientY,2))
-                    obox.style.width =dis2*w/dis
-                    obox.style.height =dis2*h/dis
+                     alert(dis2*w/dis, alert(dis2*h/dis))
+                    obox.style.width =dis2*w/dis;
+                    obox.style.height =dis2*h/dis;
+                 
                 }
                   ev.preventDefault();
               }
@@ -37,9 +38,8 @@
                 obox.removeEventListener('touchmove',fnmove,false);
                 obox.removeEventListener('touchend',fnend,false);
               }
-              ev.preventDefault();
+             
             },false);
-
         }
     </script>
   </body>
