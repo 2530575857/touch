@@ -27,9 +27,9 @@
               function fnmove(ev){
                 if (ev.targetTouches.length>=2) {
                     let dis2 =Math.sqrt(Math.pow(ev.targetTouches[0].clientX-ev.targetTouches[1].clientX,2)+Math.pow(ev.targetTouches[0].clientY-ev.targetTouches[1].clientY,2))
-                    alert(dis2)
-                    obox.style.width =dis2*w/dis;
-                    obox.style.height =dis2*h/dis;
+                  
+                    obox.style.width =dis2*w/dis+"px";
+                    obox.style.height =dis2*h/dis+"px";
                  
                 }
                   ev.preventDefault();
