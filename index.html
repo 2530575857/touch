@@ -24,13 +24,14 @@
             let a=ev.targetTouches[0].clientX-ev.targetTouches[1].clientX;
             let b=ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
             let Angle =Math.atan2(b, a)*180/Math.PI;
+            let dzAngles=Angles;
             function fnmove(ev){
               //2
               if (ev.targetTouches.length>=2) {
                 let a=ev.targetTouches[0].clientX-ev.targetTouches[1].clientX;
                 let b=ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
                 let Angle2 =Math.atan2(b, a)*180/Math.PI;
-                Angles =Angles+Angle2-Angle
+                  Angles =dzAngles+Angle2-Angle;
                 obox.style.transform=`rotate(${Angles}deg)`;
               }
               ev.preventDefault()
