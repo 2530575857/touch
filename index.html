@@ -25,6 +25,7 @@
             if(even.targetTouches.length>=2){
               let a= even.targetTouches[0].clientX-even.targetTouches[1].clientX;
               let b= even.targetTouches[0].clientY-even.targetToucher[1].clientY;
+              p1.innerText =a;
               let ang =Math.atan(a/b)*180/Math.PI;
               p1.innerText =ang;
               
