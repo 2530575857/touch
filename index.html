@@ -24,7 +24,8 @@
               let a= even.targetTouches[0].clientX-even.targetTouches[1].clientX;
               let b= even.targetTouches[0].clientY-even.targetToucher[1].clientY;
               let ang =(Math.atan2(b,a)/(Math.PI/180));
-              p1.innerText =ang;
+              alert(ang)
+              
               let startAng=old_ang;
               function fnmove(even){
                 if(even.targetTouches.length>=2){
