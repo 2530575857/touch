@@ -22,16 +22,17 @@
         obox.addEventListener('touchstart',function(even){
             if(even.targetTouches.length>=2){
               let a= even.targetTouches[0].clientX-even.targetTouches[1].clientX;
+              alert(a)
               let b= even.targetTouches[0].clientY-even.targetToucher[1].clientY;
-              let ang =(Math.atan2(b,a)/(Math.PI/180));
-              alert(ang)
+              let ang=Math.atan2(b, a)*180/Math.PI;
+              
               
               let startAng=old_ang;
               function fnmove(even){
                 if(even.targetTouches.length>=2){
                   let a= even.targetTouches[0].clientX-even.targetTouches[1].clientX;
                   let b= even.targetTouches[0].clientY-even.targetToucher[1].clientY;
-                  let ang2 =Math.atan2(b,a)/(Math.PI/180);
+                  let ang2=Math.atan2(b, a)*180/Math.PI;
                   old_ang=startAng+ang2-ang;
                   obox.style.transform=`rotate(${old_ang}deg)`;
                 }
