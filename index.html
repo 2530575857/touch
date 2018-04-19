@@ -37,7 +37,6 @@
            let disB =ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
            let ang2 =Math.atan(disA/disB)*180/Math.PI;
             angs =ang_bie+ang2 -ang1;
-             alert(angs)
             obox.style.transform=`rotate(${angs}deg)`;  
             ev.preventDefault()
           }
