@@ -17,9 +17,9 @@
       window.onload =function(){
         let obox =document.querySelector('.box')
         let angs =0;
+        let ang_bie=0;
         obox.addEventListener("touchstart",function(ev){
           let ang1 =0;
-          let ang_bie=0;
           console.log(ev.targetTouches.length);
           if (ev.targetTouches.length>=2) {
            
@@ -36,7 +36,7 @@
            let disA =ev.targetTouches[0].clientX-ev.targetTouches[1].clientX;
            let disB =ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
            let ang2 =Math.atan(disA/disB)*180/Math.PI;
-            angs =ang_bie+ang2 -ang1;
+            angs =ang_bie+ang2-ang1;
             obox.style.transform=`rotate(${angs}deg)`;  
             ev.preventDefault()
           }
