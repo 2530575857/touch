@@ -25,6 +25,7 @@
             let disA =ev.targetTouches[0].clientX-ev.targetTouches[1].clientX;
             let disB =ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
             ang1 =Math.atan(a/b)*180/Math.PI;
+            alert(ang1)
             let ang_bie =angs;
             obox.addEventListener("touchmove",fnmove,false)
             obox.addEventListener("touchend",fnend,false)
@@ -36,6 +37,7 @@
             let disB =ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
             let ang2 =Math.atan(a/b)*180/Math.PI;
             angs =ang_bie+ang2 -ang1;
+            alert(ang2)
             obox.style.transform=`rotate(${angs}deg)`;  
             ev.preventDefault()
           }
