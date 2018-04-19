@@ -16,35 +16,33 @@
     <script type="text/javascript">
       window.onload =function(){
         let obox =document.querySelector('.box')
-        let Angles =0;
-        obox.addEventListener('touchstart',function(ev){
-          console.log(ev);
-          //2
-          if(ev.targetTouches.length>=2){
-            let a=ev.targetTouches[0].clientX-ev.targetTouches[1].clientX;
-            let b=ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
-            let Angle =Math.atan2(b, a)*180/Math.PI;
-            let dzAngles=Angles;
-            function fnmove(ev){
-              //2
-              if (ev.targetTouches.length>=2) {
-                let a=ev.targetTouches[0].clientX-ev.targetTouches[1].clientX;
-                let b=ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
-                let Angle2 =Math.atan2(b, a)*180/Math.PI;
-                  Angles =dzAngles+Angle2-Angle;
-                obox.style.transform=`rotate(${Angles}deg)`;
-              }
-              ev.preventDefault()
-            }
-            function fnend(ev){
-              obox.removeEventListener('touchmove',fnmove,false)
-              obox.removeEventListener('touchend',fnend,false)
-            }
-            obox.addEventListener('touchmove',fnmove,false)
-            obox.addEventListener('touchend',fnend,false)
+        let angs =0;
+        obox.addEventListener("touchstart",function(ev){
+          let ang1 =0;
+          console.log(ev.targetTouches.length);
+          if (ev.targetTouches.length>=2) {
+            let disA =ev.targetToucher[0].clientX-ev.targetToucher[1].clientX;
+            let disB =ev.targetToucher[0].clientY-ev.targetToucher[1].clientY;
+            ang1 =Math.atan(a/b)*180/Math.PI;
+            let ang_bie =angs;
+            obox.addEventListener("touchmove",fnmove,false)
+            obox.addEventListener("touchend",fnend,false)
+            ev.preventDefault()
           }
-          ev.preventDefault()
+
+          function fnmove(ev){
+            let disA =ev.targetToucher[0].clientX-ev.targetToucher[1].clientX;
+            let disB =ev.targetToucher[0].clientY-ev.targetToucher[1].clientY;
+            let ang2 =Math.atan(a/b)*180/Math.PI;
+            angs =ang_bie+ang2 -ang1;
+            ev.preventDefault()
+          }
+          function fnend(ev){
+            obox.removeEventListener("touchmove",fnmove,false)
+            obox.removeEventListener("touchend",fnend,false)
+          }
         },false)
+
       }
     </script>
   </body>
