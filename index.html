@@ -23,6 +23,7 @@
           if (ev.targetTouches.length>=2) {
             let disA =ev.targetToucher[0].clientX-ev.targetToucher[1].clientX;
             let disB =ev.targetToucher[0].clientY-ev.targetToucher[1].clientY;
+            alert(disB)
             ang1 =Math.atan(a/b)*180/Math.PI;
             let ang_bie =angs;
             obox.addEventListener("touchmove",fnmove,false)
