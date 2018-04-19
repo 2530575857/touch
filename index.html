@@ -22,9 +22,9 @@
           console.log(ev.targetTouches.length);
           if (ev.targetTouches.length>=2) {
            
-            let disA =ev.targetToucher[0].clientX-ev.targetToucher[1].clientX;
+            let disA =ev.targetTouches[0].clientX-ev.targetTouches[1].clientX;
              alert(disA)
-            let disB =ev.targetToucher[0].clientY-ev.targetToucher[1].clientY;
+            let disB =ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
              alert(disB)
             ang1 =Math.atan(a/b)*180/Math.PI;
             let ang_bie =angs;
@@ -34,8 +34,8 @@
           }
 
           function fnmove(ev){
-            let disA =ev.targetToucher[0].clientX-ev.targetToucher[1].clientX;
-            let disB =ev.targetToucher[0].clientY-ev.targetToucher[1].clientY;
+            let disA =ev.targetTouches[0].clientX-ev.targetTouches[1].clientX;
+            let disB =ev.targetTouches[0].clientY-ev.targetTouches[1].clientY;
             let ang2 =Math.atan(a/b)*180/Math.PI;
             angs =ang_bie+ang2 -ang1;
             ev.preventDefault()
