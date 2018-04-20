@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport"content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title></title>
+    <style media="screen">
+        *{padding: 0;margin: 0;list-style: none}
+        html{font-size: 100px;}
+        body{width:100%;overflow: hidden;}
+        #banner{width:3.2rem;height:0.9984rem;overflow: hidden; transform:translateX(0px);}
+        #banner ul{width:999rem;transform:translateX(0px);}
+        #banner li{width:3.2rem;height:0.9984rem;float: left;line-height:0.9984rem;text-align: center;}
+        #wrap{background: #ccc;}
+        .contenr_title{width: 100%;text-align: center;z-index:1;line-height:25px;font-size: 15px}
+        #content{background: #fff; z-index: 2; margin-top: -25px; font-size: 15px}
+        .li1{background: #f0c;}
+        .li2{background: #fcc;}
+        .li3{background: #0fc;}
+        .li4{background: #ccf;}
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <div class="contenr_title">下拉刷新...</div>
+      <div id="content">
+        <div id="banner">
+          <ul id="banner_lu">
+            <li class="li1">1</li>
+            <li class="li2">2</li>
+            <li class="li3">3</li>
+            <li class="li4">4</li>
+          </ul>
+        </div>
+        <div >
+          <p>dasdsadasdasdasd</p>
+          <p>dasdsadasdasdasd</p>
+          <p>dasdsadasdasdasd</p>
+          <p>dasdsadasdasdasd</p>
+          <p>dasdsadasdasdasd</p>
+          <p>dasdsadasdasdasd</p>
+          <p>dasdsadasdasdasd</p>
+          <p>dasdsadasdasdasd</p>
+          <p>dasdsadasdasdasd</p>
+          <p>dasdsadasdasdasd</p>
+        </div>
+      </div>
+    </div>
+    <script src="jquery-1.11.3.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        window.onload =function(){
+          //rem
+          document.documentElement.style.fontSize = document.documentElement.clientWidth*100/320+"px"
+
+          let banner =document.querySelector('#banner');
+          let banner_lu=document.querySelector('#banner_lu');
+          let content =document.querySelector("#content")
+          let contenr_title =document.querySelector(".contenr_title")
+
+            let banner_left=0;
+            let content_top=0;
+          banner.addEventListener("touchstart",function(ev){
+            content.style.transition="";
+            banner_lu.style.transition="";
+
+            let x =ev.targetTouches[0].clientX;
+            let y=ev.targetTouches[0].clientY;
+            let bisx =x-banner_left;
+            let bisy=y-content_top;
+            let dis ="";
+            function fnmove(ev){
+              let movex =ev.targetTouches[0].clientX;
+              let movey=ev.targetTouches[0].clientY;
+              if (!dis) {
+                  if (Math.abs(movex-x)>=5) {
+                    dis="x"
+                  } else if(Math.abs(movey-y)>=5){
+                    dis="y"
+                  }
+              }else {
+                  if(dis=="x"){
+                      banner_left =movex-bisx;
+                      banner_lu.style.transform =`translateX(${banner_left}px)`
+                  }else if (dis=="y") {
+                      content_top =movey -bisy;
+                      content_top>0?content.style.transform =`translateY(${content_top/3}px)`: content.style.transform =`translateY(${content_top}px)`
+                      if(content_top>200) {
+                        contenr_title.innerText ="请释放手指..."
+                      }else {
+                        contenr_title.innerText ="下拉加载..."
+                      }
+                  }
+              }
+            }
+            function fnend(ev){
+              if(dis=="x"){
+                  let n =Math.round(-banner_left/banner.clientWidth);//--的正  +-的负
+                  n<=0?n=0:n>=3?n=3:n=n;
+                  banner_left=-n*banner.clientWidth;//开始是负数在这里来会本次正数   开始是正数到这里会变成负数
+                  banner_lu.style.transition="all 0.5s";
+                  banner_lu.style.transform =`translateX(${banner_left}px)`
+              }else if (dis=="y") {
+                  if(content_top<=200&&content_top>=0){
+                        content_top=0;
+                  }else if(content_top>200) {
+                        content_top=25;
+                        contenr_title.innerText ="加载中..."
+                        $.post("./data.txt",function(data,status){
+                          console.log(data,status);
+                        });
+                  }
+                  content.style.transition="all 1s";
+                  content.style.transform =`translateY(${content_top}px)`
+              }
+
+              banner.removeEventListener("touchmove",fnmove,false)
+              banner.removeEventListener("touchend",fnend,false)
+            }
+            banner.addEventListener("touchmove",fnmove,false)
+            banner.addEventListener("touchend",fnend,false)
+          },false)
+
+        }
+    </script>
+  </body>
+</html>
