@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport"content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title></title>
+    <style media="screen">
+        html{font-size: 100px}
+        *{padding: 0;margin: 0; list-style: none;}
+        body{width:100%;height:100%;overflow: hidden;}
+        #wroad{width: 100%;height: 100%;background: #ccc}
+        #content{width: 100%;height: 100%;background: #fff;transform: translate(0px);}
+        #banner{width:3.2rem;overflow: hidden;}
+        #banner ul{width:999rem;transform: translate(0px)}
+        #banner li{width:3.2rem;height:1.335766rem ;float: left; text-align: center;;line-height:1.335766rem }
+        .l1{background: #fc4}
+        .l2{background: #f0c}
+        .l3{background: #cf4}
+        .l4{background: #6c2}
+    </style>
+  </head>
+  <body>
+  <div id="wroad">
+    <div id="content">
+      <div id="banner">
+          <ul id="bannerUL">
+            <li class="l1">1</li>
+            <li class="l2">2</li>
+            <li class="l3">3</li>
+            <li class="l4">4</li>
+          </ul>
+      </div>
+      <div style="font-size:18px">
+        <p>sdasdasdsadas</p>
+        <p>sdasdasdsadas</p>
+        <p>sdasdasdsadas</p>
+        <p>sdasdasdsadas</p>
+        <p>sdasdasdsadas</p>
+        <p>sdasdasdsadas</p>
+        <p>sdasdasdsadas</p>
+        <p>sdasdasdsadas</p>
+        <p>sdasdasdsadas</p>
+        <p>sdasdasdsadas</p>
+        <p>sdasdasdsadas</p>
+        <p>sdasdasdsadas</p>
+      </div>
+    </div>
+  </div>
+    <script src="jquery.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        window.onload =function(){
+        document.documentElement.style.fontSize=document.documentElement.clientWidth*100/320+"px"
+
+        let bnaner =document.getElementById('banner');
+        let banner_ul =document.getElementById('bannerUL')
+        let content =document.getElementById('content')
+        let banner_left=-banner_ul.children[0].offsetWidth;
+        banner_ul.style.transform=`translateX(${banner_left}px)`
+        let content_top=0;
+
+        //banner
+        banner_ul.insertBefore(banner_ul.children[banner_ul.children.length-1].cloneNode(true),banner_ul.childNodes[0]);
+        banner_ul.appendChild(banner_ul.children[1].cloneNode(true));
+
+        banner.addEventListener('touchstart',function(ev){
+          banner_ul.style.transition='';//去掉下面的style过度
+          content.style.transition=''
+          let x=ev.targetTouches[0].clientX;
+          let y =ev.targetTouches[0].clientY ;
+          let movex=x-banner_left;
+          let movey =y-content_top;
+          let dir ="";//确定方向
+          function fnmove(ev){
+            let disx =ev.targetTouches[0].clientX;
+            let disy =ev.targetTouches[0].clientY;
+            if(!dir){
+              if (Math.abs(disx-x)>=5) {
+                  dir="x"
+              }else if (Math.abs(disy-y)>=5) {
+                  dir="y"
+              }
+            }else {
+              if (dir=="x") {
+                banner_left=disx-movex;
+                banner_ul.style.transform=`translateX(${banner_left}px)`
+              } else if(dir=="y") {
+                content_top=disy-movey;
+                content.style.transform=`translateY(${content_top}px)`
+              }
+            }
+          }
+          function fnend(ev){
+            if (dir=="x") {
+              let n =Math.round(-banner_left/banner.clientWidth);
+
+              if(n==0){
+                  n =banner_ul.children.length-2;
+                  banner_ul.style.transform=`translateX(${banner_left-(banner_ul.children.length-2)*banner_ul.children[0].offsetWidth}px)`
+              }else if (n==banner_ul.children.length-1) {
+                  n=1;
+                  banner_ul.style.transform=`translateX(${banner_left+(banner_ul.children.length-2)*banner_ul.children[0].offsetWidth}px)`
+              }
+              banner_left=-n*banner.clientWidth;
+              banner_ul.style.transition='all 1s ease'
+              banner_ul.style.transform=`translateX(${banner_left}px)`
+
+            } else if(dir=="y") {
+                if (content_top<200&&content_top>0) {
+                    content_top=0;
+                }else if(content_top>=200) {
+                      content_top=25;
+                      jqajax("data.txt")
+                }
+                content.style.transition='all 0.7s ease'
+                content.style.transform=`translateY(${content_top}px)`
+            }
+
+            banner.removeEventListener('touchmove',fnmove,false);
+            banner.removeEventListener('touchend',fnend,false);
+          }
+          banner.addEventListener('touchmove',fnmove,false);
+          banner.addEventListener('touchend',fnend,false);
+          ev.preventDefault();
+        },false);
+
+        function jqajax(url){
+          $.post(url,function(data){
+                console.log(data);
+          });
+        }
+
+        }
+    </script>
+  </body>
+</html>
