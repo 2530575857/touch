@@ -5,8 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>管道游戏</title>
+  <script type="text/javascript">
+  let gb;
+  var time;
+  // var canvas_h=0;
+  // var canvas_w=0;
+      function fnBG(x,y,width,height,src){//bg
+          this.x =x;
+          this.y=y;
+          this.w=width;
+          this.h=height;
+          var img =new Image()
+          img.src =src;
+          this.img =img
+          this.drawBG =function(){
+              gb.drawImage(this.img,this.x,this.y,this.w,this.h)
+          }
+      }
+      function fnGround(x,y,width,height,src){//地面
+        fnBG.call(this,x,y,width,height,src)
+      }
+      function pipeline_top(x,y,width,height,src,tu_x,tu_y,tu_width,tu_height){
+          fnBG.call(this,x,y,width,height,src)
+          this.tu_x =tu_x;
+          this.tu_y =tu_y;
+          this.tu_width =tu_width;
+          this.tu_height =tu_height;
+          this.drawBG=0;
+          this.drawPipeline=function(){
+            gb.drawImage(this.img,this.tu_x,this.tu_y,this.tu_width,this.tu_height,this.x,this.y,this.w,this.h)
+          }
+      }//top
+      function pipeline_buttom(x,y,width,height,src,tu_x,tu_y,tu_width,tu_height){
+          pipeline_top.call(this,x,y,width,height,src,tu_x,tu_y,tu_width,tu_height)
+      }//buttom
+
+      var fnBG_li =new fnBG(0,0,400,600,"images/bg.png")//bG
+      var fnGround_li =new fnGround(0,500,400,200,"images/ground.png")
+      var fpipeline_top_li =new pipeline_top(10,0,60,200,"images/pipe.png",160,483,130,804)//164,483     128,804
+      var pipeline_buttom_li =new pipeline_buttom(10,600,60,300,"images/pipe.png",0,483,130,804)//164,483     128,804
+      //启动fn
+      function start(){
+          gb.beginPath();
+          // console.log(fnGround_li);
+          fnBG_li.drawBG();
+          fnGround_li.drawBG();
+          console.log(pipeline_buttom_li);
+          fpipeline_top_li.drawPipeline();
+          pipeline_buttom_li.drawPipeline();
+      }
+      function init(){
+        var canvas=document.getElementById('canvas');
+        gb=canvas.getContext("2d");
+        // canvas_h = canvas.clientHeight;
+        // canvas_w = canvas.clientWidth;
+        time = setInterval(start,800);
+
+      }
+  </script>
 </head>
-<body>
-  
+<body onload="init()">
+  <canvas id="canvas"  height="600" width="400" style="background:#ccc; margin-left:200px">
+
+  </canvas>
 </body>
 </html>
