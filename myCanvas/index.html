@@ -8,6 +8,11 @@
   <script type="text/javascript">
   let gb;
   var time;
+  var dis=150;
+  var ARR_obj=[];
+  var ARR_obj_index=0;
+  var g=5//重力
+  var t =20//事件点击增加数值
   // var canvas_h=0;
   // var canvas_w=0;
       function fnBG(x,y,width,height,src){//bg
@@ -15,57 +20,82 @@
           this.y=y;
           this.w=width;
           this.h=height;
-          var img =new Image()
-          img.src =src;
-          this.img =img
-          this.drawBG =function(){
-              gb.drawImage(this.img,this.x,this.y,this.w,this.h)
+          if (src) {
+            var img =new Image();
+            img.src =src;
+            this.img =img;
+            this.draw =function(){
+                gb.drawImage(this.img,this.x,this.y,this.w,this.h);
+            }
           }
       }
       function fnGround(x,y,width,height,src){//地面
-        fnBG.call(this,x,y,width,height,src)
+        fnBG.call(this,x,y,width,height,src);
       }
-      function pipeline_top(src,tu_x,tu_y,tu_width,tu_height,x,y,width,height){
-          fnBG.call(this,x,y,width,height,src)
-          this.tu_x =tu_x;
-          this.tu_y =tu_y;
-          this.tu_width =tu_width;
-          this.tu_height =tu_height;
-          this.drawBG=0;
-          this.drawPipeline=function(){
-            gb.drawImage(this.img,this.tu_x,this.tu_y,this.tu_width,this.tu_height,this.x,this.y,this.w,this.h)
-          }
-      }//top
-      function pipeline_buttom(x,y,width,height,src,tu_x,tu_y,tu_width,tu_height){
-          pipeline_top.call(this,x,y,width,height,src,tu_x,tu_y,tu_width,tu_height)
-      }//buttom
+      function pipeline_top(src,x,y,width,height){//top
+          fnBG.call(this,x,y,width,height,src);
 
-      var fnBG_li =new fnBG(0,0,400,600,"images/bg.png")//bG
-      var fnGround_li =new fnGround(0,500,400,200,"images/ground.png")
-      var fpipeline_top_li =new pipeline_top("images/pipe.png",160,483,130,804,10,0,60,200)//164,483     128,804
-      var pipeline_buttom_li =new pipeline_buttom(10,600,60,300,"images/pipe.png",0,483,130,804)//164,483     128,804
+          this.draw =function(){
+              gb.drawImage(this.img,160,483,150,800,this.x,this.y,this.w,this.h);
+          }
+
+      }
+      function pipeline_buttom(src,x,y,width,height){//buttom
+          pipeline_top.call(this,src,x,y,width,height);
+          this.draw =function(){
+              gb.drawImage(this.img,10,483,150,800,this.x,this.y,this.w,this.h);
+          }
+      }
+      function Bird(arrsrc,x,y,width,height){//Bird
+        fnBG.call(this,x,y,width,height);
+        this.draw =function(){
+          var img =new Image();
+            img.src =arrsrc[ARR_obj_index%3];
+            ARR_obj_index++
+            gb.drawImage(img,this.x,this.y,this.w,this.h);
+        }
+      }
+
+      function finish(){//判断游戏结束
+
+        Bird_obj.y+=g
+      }
+
+      var fnBG_obj =new fnBG(0,0,400,600,"images/bg.png")//bG
+      var fnGround_obj =new fnGround(0,550,400,200,"images/ground.png")//dm
+      var fpipeline_top_obj =new pipeline_top("images/pipe.png",200,0,100,200)//164,483     128,804
+      var pipeline_buttom_obj =new pipeline_buttom("images/pipe.png",200,350,100,300)//164,483     128,804
+      var Bird_arrsrc=["./images/0.gif","./images/1.gif","./images/2.gif"]
+      var Bird_obj =new Bird(Bird_arrsrc,100,250,40,40)
+      ARR_obj.push(fnBG_obj)
+      ARR_obj.push(fpipeline_top_obj)
+      ARR_obj.push(pipeline_buttom_obj)
+      ARR_obj.push(Bird_obj)
+      ARR_obj.push(fnGround_obj)
       //启动fn
       function start(){
-          gb.beginPath();
-          // console.log(fnGround_li);
-          fnBG_li.drawBG();
-          fnGround_li.drawBG();
-          console.log(pipeline_buttom_li);
-          fpipeline_top_li.drawPipeline();
-          pipeline_buttom_li.drawPipeline();
+        gb.clearRect(0,0,400,600)
+        ARR_obj.forEach(function(obj){
+          obj.draw();
+        })
+        finish()//判断游戏结束
       }
+      function keyup(){//Bird 事件
+        (Bird_obj.y-t)<0?Bird_obj.y=0:Bird_obj.y-=t;
+      }
+
       function init(){
         var canvas=document.getElementById('canvas');
         gb=canvas.getContext("2d");
         // canvas_h = canvas.clientHeight;
         // canvas_w = canvas.clientWidth;
-        time = setInterval(start,800);
-
+        time = setInterval(start,100);
+        document.onkeyup = keyup
       }
   </script>
 </head>
 <body onload="init()">
-  <canvas id="canvas"  height="600" width="400" style="background:#ccc">
+  <canvas id="canvas"  height="600" width="400" style="background:#ccc; margin-left:400px">
 
   </canvas>
 </body>
