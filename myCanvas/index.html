@@ -60,20 +60,40 @@
       }
 
     function ouwer(){//结束动画
-    alert()
-    }
+      alert()
+      }
+    // function difficulty(){//游戏难度
+      // if(score>50){
+      //     dis=150
+      //     x=20
+      //     g=20
+      // }else if (score>100) {
+      //     dis=100
+      //     x=40
+      //     g=25
+      //     t=70
+      // }else if (score>150) {
+      //     dis=70
+      //     x=60
+      //     g=30
+      //     t=80
+      // }
+      // if(!score%3){
+      //   dis-20>100?dis-=20:dis=100;
+      //   x+=10;
+      // }
 
+    // }
       function finish(){//判断游戏结束
         if(Bird_obj.y>fnGround_obj.y-Bird_obj.h){//碰撞判断
           window.clearInterval(time);
           ouwer()
-        }else if((Bird_obj.x+Bird_obj.w>fpipeline_top_obj.x)&&(Bird_obj.x+Bird_obj.w<fpipeline_top_obj.x+fpipeline_top_obj.w+Bird_obj.w)){//碰撞判断
-            if((Bird_obj.y<fpipeline_top_obj.h)||(Bird_obj.y>pipeline_buttom_obj.y)){
+        }else if((Bird_obj.x+Bird_obj.w>fpipeline_top_obj.x)&&(Bird_obj.x+Bird_obj.w<fpipeline_top_obj.x+fpipeline_top_obj.w+Bird_obj.w&&((Bird_obj.y<fpipeline_top_obj.h)||(Bird_obj.y>pipeline_buttom_obj.y)))){//碰撞判断
+
               window.clearInterval(time);
               ouwer()
-            }
-        }
 
+        }
           Bird_obj.y+=g
           if(fpipeline_top_obj.x+fpipeline_top_obj.w>0){
             fpipeline_top_obj.x-=x;
@@ -89,7 +109,14 @@
           }
           if(flag&&Bird_obj.x>fpipeline_top_obj.x+fpipeline_top_obj.w){
             flag=false;
-            score+=20
+            score+=1
+            if(!(score%3)){//难度
+              dis-20<=100?dis=100:dis-=20;
+              x+=2;
+              g+=1;
+              t+=2
+            }
+
           }
 
         gb.fillStyle="rgb(255,255,255)"
@@ -115,6 +142,7 @@
           obj.draw();
         })
         finish()//判断游戏结束
+        // difficulty()//游戏难度
       }
       function keyup(e){//Bird 事件
         if(e.keyCode==32){
