@@ -8,11 +8,14 @@
   <script type="text/javascript">
   let gb;
   var time;
-  var dis=150;
+  var dis=200;
   var ARR_obj=[];
   var ARR_obj_index=0;
-  var g=5//重力
-  var t =20//事件点击增加数值
+  var g=10;//重力
+  var x =10;//管道移动速度
+  var t =50;//事件点击增加数值
+  var score=0;//分数
+  var flag=true;//得分判断限制
   // var canvas_h=0;
   // var canvas_w=0;
       function fnBG(x,y,width,height,src){//bg
@@ -56,15 +59,48 @@
         }
       }
 
-      function finish(){//判断游戏结束
+    function ouwer(){//结束动画
+    alert()
+    }
 
-        Bird_obj.y+=g
+      function finish(){//判断游戏结束
+        if(Bird_obj.y>fnGround_obj.y-Bird_obj.h){//碰撞判断
+          window.clearInterval(time);
+          ouwer()
+        }else if((Bird_obj.x+Bird_obj.w>fpipeline_top_obj.x)&&(Bird_obj.x+Bird_obj.w<fpipeline_top_obj.x+fpipeline_top_obj.w+Bird_obj.w)){//碰撞判断
+            if((Bird_obj.y<fpipeline_top_obj.h)||(Bird_obj.y>pipeline_buttom_obj.y)){
+              window.clearInterval(time);
+              ouwer()
+            }
+        }
+
+          Bird_obj.y+=g
+          if(fpipeline_top_obj.x+fpipeline_top_obj.w>0){
+            fpipeline_top_obj.x-=x;
+            pipeline_buttom_obj.x-=x;
+          }else {
+            flag=true;
+            fpipeline_top_obj.x=400;
+            pipeline_buttom_obj.x=400;
+            //高度
+            fpipeline_top_obj.h =Math.random()*200+100;
+            pipeline_buttom_obj.y =fpipeline_top_obj.h+dis;
+            pipeline_buttom_obj.h =600-pipeline_buttom_obj.y;
+          }
+          if(flag&&Bird_obj.x>fpipeline_top_obj.x+fpipeline_top_obj.w){
+            flag=false;
+            score+=20
+          }
+
+        gb.fillStyle="rgb(255,255,255)"
+        gb.font="30px Accent"
+        gb.fillText(score,200,100)
       }
 
       var fnBG_obj =new fnBG(0,0,400,600,"images/bg.png")//bG
       var fnGround_obj =new fnGround(0,550,400,200,"images/ground.png")//dm
-      var fpipeline_top_obj =new pipeline_top("images/pipe.png",200,0,100,200)//164,483     128,804
-      var pipeline_buttom_obj =new pipeline_buttom("images/pipe.png",200,350,100,300)//164,483     128,804
+      var fpipeline_top_obj =new pipeline_top("images/pipe.png",200,0,70,200)//164,483     128,804
+      var pipeline_buttom_obj =new pipeline_buttom("images/pipe.png",200,350,70,300)//164,483     128,804
       var Bird_arrsrc=["./images/0.gif","./images/1.gif","./images/2.gif"]
       var Bird_obj =new Bird(Bird_arrsrc,100,250,40,40)
       ARR_obj.push(fnBG_obj)
@@ -80,8 +116,10 @@
         })
         finish()//判断游戏结束
       }
-      function keyup(){//Bird 事件
-        (Bird_obj.y-t)<0?Bird_obj.y=0:Bird_obj.y-=t;
+      function keyup(e){//Bird 事件
+        if(e.keyCode==32){
+            (Bird_obj.y-t)<0?Bird_obj.y=0:Bird_obj.y-=t;
+        }
       }
 
       function init(){
