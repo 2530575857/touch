@@ -25,7 +25,7 @@
       function fnGround(x,y,width,height,src){//地面
         fnBG.call(this,x,y,width,height,src)
       }
-      function pipeline_top(x,y,width,height,src,tu_x,tu_y,tu_width,tu_height){
+      function pipeline_top(src,tu_x,tu_y,tu_width,tu_height,x,y,width,height){
           fnBG.call(this,x,y,width,height,src)
           this.tu_x =tu_x;
           this.tu_y =tu_y;
@@ -42,7 +42,7 @@
 
       var fnBG_li =new fnBG(0,0,400,600,"images/bg.png")//bG
       var fnGround_li =new fnGround(0,500,400,200,"images/ground.png")
-      var fpipeline_top_li =new pipeline_top(10,0,60,200,"images/pipe.png",160,483,130,804)//164,483     128,804
+      var fpipeline_top_li =new pipeline_top("images/pipe.png",160,483,130,804,10,0,60,200)//164,483     128,804
       var pipeline_buttom_li =new pipeline_buttom(10,600,60,300,"images/pipe.png",0,483,130,804)//164,483     128,804
       //启动fn
       function start(){
