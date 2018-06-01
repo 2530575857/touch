@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style media="screen">
+    *{margin:0;padding: 0}
+    body{
+      background: #000;
+      text-align: center;
+    }
+    #canvas{background: url(./img/game_bg_2_hd.jpg);margin-top: 50px}
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="600"></canvas>
+  <script src="js/common.js" charset="utf-8"></script>
+  <script src="js/elfOBJ.js" charset="utf-8"></script>
+  <script type="text/javascript">
+      let oC =document.getElementById('canvas')
+      let gd =oC.getContext('2d')
+
+      window.onload=function(){
+        loadImgs({//加载资源函数
+          "fish1":"img/fish1.png",
+          "fish2":"img/fish2.png",
+          "fish3":"img/fish3.png",
+          "fish4":"img/fish4.png",
+        },function(imgOBJ){
+          // var fish1 =new elf(imgOBJ.fish1,300,200,55,37,0)
+          var fish1 =new fish(1,100,300,0)
+          var i=0;
+          var tike=0;
+          setInterval(function(){
+            gd.clearRect(0,0,oC.width,oC.height)
+            fish1.x++
+            tike++
+            if(tike==10){
+              // alert()
+              fish1.nextFrame()
+              tike=0
+            }
+
+            fish1.draw(gd)
+
+          },16)
+
+        })
+      }
+  </script>
+</body>
+</html>
