@@ -1,5 +1,10 @@
 let _imgs =null;
-
+const resource ={//加载资源函数
+  "fish1":"img/fish1.png",
+  "fish2":"img/fish2.png",
+  "fish3":"img/fish3.png",
+  "fish4":"img/fish4.png",
+}
 function b2a(n){
     return n*Math.PI/180
 }
