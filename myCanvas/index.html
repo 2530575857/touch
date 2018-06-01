@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>管道游戏</title>
+  <style media="screen">
+  <style>
+          *{
+             margin: 0;
+              padding: 0;
+          }
+          div{
+             width:100%;
+              height: 100%;
+              background: yellow;
+             position: absolute;
+         }
+
+  </style>
   <script type="text/javascript">
   let gb;
   var time;
@@ -16,6 +30,8 @@
   var t =50;//事件点击增加数值
   var score=0;//分数
   var flag=true;//得分判断限制
+  var snW =0;//设备宽
+  var snH =0;//设备高
   // var canvas_h=0;
   // var canvas_w=0;
       function fnBG(x,y,width,height,src){//bg
@@ -65,28 +81,6 @@
           }
       }
 
-    // function difficulty(){//游戏难度
-      // if(score>50){
-      //     dis=150
-      //     x=20
-      //     g=20
-      // }else if (score>100) {
-      //     dis=100
-      //     x=40
-      //     g=25
-      //     t=70
-      // }else if (score>150) {
-      //     dis=70
-      //     x=60
-      //     g=30
-      //     t=80
-      // }
-      // if(!score%3){
-      //   dis-20>100?dis-=20:dis=100;
-      //   x+=10;
-      // }
-
-    // }
       function finish(){//判断游戏结束
         if(Bird_obj.y>fnGround_obj.y-Bird_obj.h){//碰撞判断
           window.clearInterval(time);
@@ -155,6 +149,10 @@
       function init(){
         var canvas=document.getElementById('canvas');
         gb=canvas.getContext("2d");
+         snW =document.body.clientWidth
+         snH =document.body.clientHeight
+         // alert((window.innerWidth|| document.documentElement.clientWidth || document.body.clientWidth))
+         //var h=windows.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
         // canvas_h = canvas.clientHeight;
         // canvas_w = canvas.clientWidth;
         time = setInterval(start,100);
@@ -163,8 +161,11 @@
   </script>
 </head>
 <body onload="init()">
-  <canvas id="canvas"  height="600" width="400" style="background:#ccc; margin-left:400px">
+  <div>
+    <canvas id="canvas"  height="600" width="400" style="background:#ccc">
 
-  </canvas>
+    </canvas>
+  </div>
+
 </body>
 </html>
