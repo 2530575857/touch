@@ -11,14 +11,25 @@ Buffer.prototype.split=Buffer.prototype.split||function(spliter){
   result.push(Buffer1);
   return result;
 }
-exports.parseInfo =function(info){
+exports.parseInfo =function(str){
+  // console.log(str.toString());
+    let arr2 =[];
     let json ={};
-    let arr =info.split(/(; )|(\r\n)/g);
-    console.log(arr);
-    // arr.forEach(itam=>{
-    //   let [key,val] =itam.split('=')
-    //     // console.log(itam.split('=').map(a=>a.toString()));
-    //   json[key]=val;
-    // });
-    // return json;
+// console.log(info.toString());
+    let arr =str.split('; ');
+    // console.log(arr.map(a=>a.toString()));
+    arr.forEach(itam=>{
+      // console.log(itam.toString());
+      let a =itam.split('\r\n');
+      // console.log(a.map(b=>b.toString()));
+      arr2=arr2.concat(a);
+      // console.log(arr2.map(b=>b.toString()));
+        arr2.forEach(s=>{
+          let [key,val] =s.split('=')
+            // console.log(s.split('=').map(a=>a.toString()));
+          json[key]=val;
+        })
+    });
+    // console.log(json);
+      return json;
 }
