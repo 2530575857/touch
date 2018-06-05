@@ -1,7 +1,7 @@
 const http =require('http');
 const url =require('url');
 const querystring =require('querystring');
-const common =require('../libs/common');
+const common =require('./libs/common');
 const fs=require('fs');
 const uuid =require('uuid/v4');
 const path =require('path');
@@ -25,7 +25,8 @@ let server= http.createServer((req,res)=>{
       arr=arr.map(itam=>itam.slice(2,itam.length-2))
 
 // console.log(arr.map(a=>a.toString()));
-
+      let inite =0;
+      let pasode =0;
       arr.forEach(itam=>{
         var n=itam.indexOf('\r\n\r\n');
         let info =itam.slice(0,n);
@@ -37,18 +38,24 @@ let server= http.createServer((req,res)=>{
 // console.log(key);
             let val =data.toString();
         }else {
+            inite++
             let json =common.parseInfo(info);
             let name =json.name;
             let filename =json.filename;
-            let filepath =`./upload/${uuid().replace(/\-/g,'')}${path.extname(filename.toString())}`;
-            console.log(data.toString());
+            let filepath =`.\/upload\/${uuid().replace(/\-/g,'')}${path.extname(filename.toString())}`;
             // fs.writeFile(filepath,data)
             fs.writeFile(filepath, data, function (err) {
-            // if (err) throw err;
-            console.log(err);
+              if(err){
+                  console.log("写入错误");
+              }else {
+                  pasode++
+                  if(inite==pasode){
+                    console.log("写入完成");
+                  }
+              }
+
             });
-
-
+            console.log(filepath);
         }
       })
 

@@ -23,11 +23,16 @@ exports.parseInfo =function(str){
       let a =itam.split('\r\n');
       // console.log(a.map(b=>b.toString()));
       arr2=arr2.concat(a);
-      // console.log(arr2.map(b=>b.toString()));
+      console.log(arr2.map(b=>b.toString()));
         arr2.forEach(s=>{
           let [key,val] =s.split('=')
-            // console.log(s.split('=').map(a=>a.toString()));
-          json[key]=val;
+          if(key=="filename"){
+            val =val.toString().replace(/\"|\'/g,"")
+          }
+
+          // // console.log(val.toString());
+          //   console.log(key.toString(),val.toString());
+            json[key]=val;
         })
     });
     // console.log(json);
