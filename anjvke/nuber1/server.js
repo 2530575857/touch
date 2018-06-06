@@ -11,12 +11,14 @@ let server= http.createServer((req,res)=>{
     const contentType="--"+req.headers['content-type'].split('; ')[1].split('=')[1];
     //post 方式
     let aBuffer=[];
-    let post=null;
+
     req.on('data',data=>{
         aBuffer.push(data);
     });
     req.on('end',()=>{
       let data= Buffer.concat(aBuffer);//拼接Buffle
+      let post={};
+      let files={};
       if(req.headers['content-type'].indexOf('multipart/form-data')==0){
       //form-data
       let arr=data.split(contentType);
@@ -33,17 +35,22 @@ let server= http.createServer((req,res)=>{
         let data =itam.slice(n+4)
           // console.log(info.toString().indexOf('Content-Type')==-1);
           // console.log(data.toString());
+
         if(info.indexOf('Content-Type')==-1){
-            let name =common.parseInfo(info).name;
+            let key =common.parseInfo(info).name.toString();
 // console.log(key);
             let val =data.toString();
+            post[key]=val;
+            // console.log(post);
         }else {
             inite++
             let json =common.parseInfo(info);
-            let name =json.name;
+            let key =json.name;
             let filename =json.filename;
+            let val =data;
             let filepath =`.\/upload\/${uuid().replace(/\-/g,'')}${path.extname(filename.toString())}`;
             // fs.writeFile(filepath,data)
+            files[key]={"filename":filename,"val":val}
             fs.writeFile(filepath, data, function (err) {
               if(err){
                   console.log("写入错误");
@@ -51,12 +58,12 @@ let server= http.createServer((req,res)=>{
                   pasode++
                   if(inite==pasode){
                     console.log("写入完成");
+                    console.log(post,files);
                   }
               }
-
             });
-            console.log(filepath);
         }
+
       })
 
       // console.log(data.toString());

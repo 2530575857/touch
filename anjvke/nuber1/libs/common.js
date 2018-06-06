@@ -23,7 +23,7 @@ exports.parseInfo =function(str){
       let a =itam.split('\r\n');
       // console.log(a.map(b=>b.toString()));
       arr2=arr2.concat(a);
-      console.log(arr2.map(b=>b.toString()));
+      // console.log(arr2.map(b=>b.toString()));
         arr2.forEach(s=>{
           let [key,val] =s.split('=')
           if(key=="filename"){
