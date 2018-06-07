@@ -26,6 +26,7 @@ http.createServer((req,res)=>{
       res.setHeader('Content-Encoding','gzip')
       rs.pipe(gz).pipe(res);
       rs.on('error',()=>{
+        res.setHeader('Content-Encoding','text')
         res.writeHeader(404);
         res.send("你要找的东西飞走");
         console.log("1");
