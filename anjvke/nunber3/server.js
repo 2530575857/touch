@@ -7,8 +7,7 @@ const crypto =require('crypto')
 
 let server =express();
 server.listen(8080);
-let db =mysql.createPool({host:'localhost',user:'root',password:'qq123456',database:'20180315'});
-
+let db =mysql.createPool({host:'localhost',user:'root',password:'qq123456',database:'20180314'});
 
 
 server.get('/reg',(req,res,next)=>{//验证字段是否符合  规则
@@ -25,7 +24,7 @@ server.get('/reg',(req,res,next)=>{//验证字段是否符合  规则
 });
 server.get('/reg',(req,res,next)=>{//查询user字段是否存在
   let {user,pass}=req.query;
-  db.query(`SELECT username FROM userzc WHERE username=${user}` ,(err,data)=>{
+  db.query(`SELECT username FROM userzc WHERE username='${user}'` ,(err,data)=>{
     if(err){
         res.send({code:1,mag:"数据库错误1"});
     }else if (data.length>0) {
@@ -56,7 +55,7 @@ server.get('/reg',(req,res,next)=>{//查询id字段是否存在
 
 server.get('/reg',(req,res,next)=>{//对字段进行 MD5  编码
   let {user,pass}=req.query;
-  
+
   let md5 =crypto.createHash('md5');
   md5 .update(pass);
   pass =md5.digest('hex');
