@@ -3,12 +3,13 @@ const mysql =require('mysql');
 const md5 = require('md5');
 const uuid =require('uuid/v4');
 const crypto =require('crypto')
-
+const my_logger =require('./libs/my_logger')
 
 let server =express();
 server.listen(8080);
 let db =mysql.createPool({host:'localhost',user:'root',password:'qq123456',database:'20180314'});
 
+server.use(my_logger)
 
 server.get('/reg',(req,res,next)=>{//验证字段是否符合  规则
   let {user,pass}=req.query;
