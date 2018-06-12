@@ -7,9 +7,12 @@
   <title>Document</title>
 </head>
 <body>
-<form  action="http://localhost:8080/logli" method="post">
+<form  action="http://localhost:8080/uploads" method="post" enctype="multipart/form-data">
    账号：<input type="text" name="user" ><br/>
    密码：<input type="text" name="pass" ><br/>
+   头像：<input type="file" name="f1"><br/>
+   附件：<input type="file" name="f2"><br/>
+   附件：<input type="file" name="f3"><br/>
    <input type="submit" value="提交">
 </form>
 <script type="text/javascript">
