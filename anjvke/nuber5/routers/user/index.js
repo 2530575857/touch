@@ -12,7 +12,7 @@ router_user.get('/index',(req,res)=>{
   //
 //静态化
 fs.stat(`./render_cache/user/index`,(err,stat)=>{
-  if(err||(Date.parse(new Date())-(1000*60))>Date.parse(stat.ctime)){//ctime
+  if(err||(Date.parse(new Date())-(1000*60*10))>Date.parse(stat.ctime)){//ctime   //十分钟刷新一次  静态文件
     console.log("一分钟到了");
     renderAndWrite()
   }else {
