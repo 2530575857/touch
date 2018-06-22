@@ -59,5 +59,13 @@ admin.get('/',(req,res)=>{
 });
 
 admin.get('/house',(req,res)=>{
-  res.render('index',{error:''})
+  req.db.query(`SELECT * FROM house_table`,(err,data)=>{
+    if(err){
+      res.sendStatus(500);
+      console.log("数据库查询错误");
+    }else {
+      res.render('index',{data});
+    }
+  })
+
 });
