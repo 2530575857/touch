@@ -59,6 +59,5 @@ admin.get('/',(req,res)=>{
 });
 
 admin.get('/house',(req,res)=>{
-  res.send('ok');
-  res.end();
+  res.render('index',{error:''})
 });
