@@ -4,16 +4,16 @@ const commen =require('../libs/commen');
 
 let admin =express.Router();
 module.exports = admin;
-
+//登陆检验
 admin.use((req,res,next)=>{
-  console.log(req.signedCookies);
-  // console.log(req.url);
-  if(!req.signedCookies['cookie_id']&&req.url!='/login'){
+  console.log(req.session);
+  if(!req.session['cookie_id']&&req.url!='/login'){
       res.redirect('/admin/login');
   }else {
       next();
   }
 });
+
 //登陆界面
 admin.get('/login',(req,res)=>{
   res.render('login',{error:''})
@@ -24,7 +24,8 @@ admin.post('/login',(req,res)=>{
   if(user==config.root_user){
     if(commen.md5(pass) ==config.root_pass){
         console.log("超级管理员登陆成功");
-        res.cookie('cookie_id',1,{signed:true,maxAge:1200000});
+        req.session.cookie_id =  1;
+        // res.cookie('cookie_id',1,{signed:true,maxAge:1200000});
         res.redirect('/admin/');
     }else {
         console.log("超级管理员登陆失败");
@@ -40,7 +41,8 @@ admin.post('/login',(req,res)=>{
           }else {
             if(data[0].password==commen.md5(pass)){
               console.log("管理员登陆成功");
-              res.cookie('cookie_id',data[0].ID,{signed:true,maxAge:1200000});
+              req.session.cookie_id =data[0].ID;
+              // res.cookie('cookie_id',data[0].ID,{signed:true,maxAge:1200000});
               res.redirect('/admin/');
             } else {
               console.log("管理员登陆失败");
@@ -53,7 +55,7 @@ admin.post('/login',(req,res)=>{
     res.render('login',{error:e});
   }
 });
-
+//admin 根目录
 admin.get('/',(req,res)=>{
     res.redirect('/admin/house');
 });
