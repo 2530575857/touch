@@ -92,10 +92,12 @@ admin.post('/login',(req,res)=>{
     })
   };
 });
+
 //admin 根目录
 admin.get('/',(req,res)=>{
     res.redirect('/admin/house');
 });
+
 //获取房屋信息
 admin.get('/house',(req,res)=>{
   req.db.query(`SELECT * FROM house_table`,(err,data)=>{
@@ -108,9 +110,54 @@ admin.get('/house',(req,res)=>{
   })
 
 });
-
 //添加房屋信息
-admin.post('/add',(req,res)=>{
-    console.log(req.body);
-    console.log(req.files);
+admin.post('/house',(req,res)=>{
+    let img_paths =[];
+    let img_real_paths=[];
+
+    req.body['sale_time'] =Math.floor(new Date(req.body['sale_time']).getTime()/1000);
+    req.body['submit_time'] =Math.floor(new Date(req.body['submit_time']).getTime()/1000);
+    req.files.forEach(json=>{
+      switch(json.fieldname){
+        case 'main_img_path':
+          req.body['main_img_path'] =json.filename;
+          req.body['main_img_real_path'] =json.path.replace(/\\/g,'\\\\');
+        break;
+        case 'property_img_paths':
+          req.body['property_img_paths'] =json.filename;
+          req.body['property_img_real_paths'] =json.path.replace(/\\/g,'\\\\');
+        break;
+        case 'img_paths':
+          img_paths.push(json.filename);
+          img_real_paths.push(json.path.replace(/\\/g,'\\\\'));
+        break;
+      };
+    });
+    req.body['img_paths'] =img_paths.join(',');
+    req.body['img_real_paths'] =img_real_paths.join(',');
+    req.body['admin_ID'] =req.admin_id;
+    req.body['ID']= commen.uuid();
+    //sql
+    let arrFile=[];
+    let arrValue=[];
+    for(let name in req.body){
+      arrFile.push(name);
+      arrValue.push(req.body[name])
+    }
+    let sql =`INSERT INTO house_table (${arrFile.join(',')}) VALUES ('${arrValue.join("','")}')`;
+
+    req.db.query(sql,err=>{
+      if(err){
+          res.sendStatus(500);
+          console.log(err);
+      }else {
+          res.redirect('/admin/house');
+      }
+    })
+
+})
+
+//删除房源信息
+admin.get('/delete',(req,res)=>{
+  console.log("1");
 })

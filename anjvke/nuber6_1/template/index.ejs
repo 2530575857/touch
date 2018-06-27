@@ -994,8 +994,8 @@
                               </div>
 
                               <div class="col-xs-2">
-                                  <button class="btn btn-success btn-xs" data-toggle="modal" data-target="#reviseSchool">修改</button>
-                                  <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteSchool">删除</button>
+                                  <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#reviseSchool">修改</a>
+                                  <a href="/admin/delete?id=<%=json.ID%>" onclick="if(confirm('确定删除?')==false)return false;" class="btn btn-danger btn-xs"  >删除</a>
                               </div>
                             <% }); %>
                         </div>
@@ -1046,7 +1046,7 @@
                             <div class="modal-body">
 
                                 <div class="container-fluid ">
-                                  <form class="form-horizontal" id="add_form" method="post" action="http://localhost:8080/admin/add"  enctype="multipart/form-data" >
+                                  <form class="form-horizontal" id="add_form" method="post" action="/admin/house"  enctype="multipart/form-data" >
                                       <!-- 房屋信息添加修改 -->
 
                                   </form>
@@ -1935,7 +1935,7 @@
           {'type':'tel','title':'电话','name':'tel'},
           {'type':'Date','title':'售房时间','name':'sale_time'},
           {'type':'Date','title':'交房时间','name':'submit_time'},
-          {'type':'text','title':'房屋类型','name':'buliding_type'},
+          {'type':'text','title':'房屋类型','name':'building_type'},
           {'type':'file','title':'主展示图','name':'main_img_path', 'accept_type':"image/gif,image/jpeg,image/png"},
           {'type':'file','title':'轮播图','name':'img_paths' ,'accept_type':"image/gif,image/jpeg,image/png",'multiple':true},
           {'type':'text','title':'房屋大小类型','name':'property_types'},
