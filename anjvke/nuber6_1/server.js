@@ -26,7 +26,7 @@ server.use(bodyParser.urlencoded({}));
 server.use(multer({dest:'./uploads'}).any());
 
 server.use(cookieParser(require('./secret/cookie_key')));
-server.use(cookieSession({ name: 'session',keys:require('./secret/session_key'),maxAge:1200000}));
+server.use(cookieSession({ name: 'session',keys:require('./secret/session_key')}));
 
 server.engine('html',consolidate.ejs);
 server.set('view engine','ejs');

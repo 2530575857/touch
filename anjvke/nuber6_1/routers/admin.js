@@ -82,7 +82,7 @@ admin.post('/login',(req,res)=>{
           console.log(err);
           res.sendStatus(500);
         }else {
-          res.cookie('admin_token',ID,{maxAge: 600000});
+          res.cookie('admin_token',ID);//,{maxAge: 6000000000}
           let ref =req.query['ref'];
           if(!ref){
               ref=''
@@ -96,7 +96,7 @@ admin.post('/login',(req,res)=>{
 admin.get('/',(req,res)=>{
     res.redirect('/admin/house');
 });
-
+//获取房屋信息
 admin.get('/house',(req,res)=>{
   req.db.query(`SELECT * FROM house_table`,(err,data)=>{
     if(err){
@@ -108,3 +108,9 @@ admin.get('/house',(req,res)=>{
   })
 
 });
+
+//添加房屋信息
+admin.post('/add',(req,res)=>{
+    console.log(req.body);
+    console.log(req.files);
+})

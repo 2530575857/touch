@@ -1037,45 +1037,25 @@
 
                 <!--弹出添加用户窗口-->
                 <div class="modal fade" id="addSchool" role="dialog" aria-labelledby="gridSystemModalLabel">
-                    <div class="modal-dialog" role="document">
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="gridSystemModalLabel">添加地区</h4>
+                                <h4 class="modal-title" id="gridSystemModalLabel">添加/修改</h4>
                             </div>
                             <div class="modal-body">
-                                <div class="container-fluid">
-                                    <form class="form-horizontal">
-                                        <div class="form-group ">
-                                            <label for="sName" class="col-xs-3 control-label">地区名称：</label>
-                                            <div class="col-xs-8 ">
-                                                <input type="email" class="form-control input-sm duiqi" id="sName" placeholder="">
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <label for="sName" class="col-xs-3 control-label">经度：</label>
-                                            <div class="col-xs-8 ">
-                                                <input type="email" class="form-control input-sm duiqi" id="sName" placeholder="">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sLink" class="col-xs-3 control-label">纬度：</label>
-                                            <div class="col-xs-8 ">
-                                                <input type="" class="form-control input-sm duiqi" id="sLink" placeholder="">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="sOrd" class="col-xs-3 control-label">简称：</label>
-                                            <div class="col-xs-8">
-                                                <input type="" class="form-control input-sm duiqi" id="sOrd" placeholder="">
-                                            </div>
-                                        </div>
-                                    </form>
+
+                                <div class="container-fluid ">
+                                  <form class="form-horizontal" id="add_form" method="post" action="http://localhost:8080/admin/add"  enctype="multipart/form-data" >
+                                      <!-- 房屋信息添加修改 -->
+
+                                  </form>
                                 </div>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-xs btn-white" data-dismiss="modal">取 消</button>
-                                <button type="button" class="btn btn-xs btn-green">保 存</button>
+                                <button type="submit" form="add_form" class="btn btn-xs btn-green">保 存</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -1914,35 +1894,67 @@
 
 <!-- this page specific inline scripts -->
 <script>
-                                                //min/max slider
-                                                function huadong(my, unit, def, max) {
-                                                    $(my).noUiSlider({
-                                                        range: [0, max],
-                                                        start: [def],
-                                                        handles: 1,
-                                                        connect: 'upper',
-                                                        slide: function() {
-                                                            var val = Math.floor($(this).val());
-                                                            $(this).find(".noUi-handle").text(
-                                                                    val + unit
-                                                                    );
-                                                            console.log($(this).find(".noUi-handle").parent().parent().html());
-                                                        },
-                                                        set: function() {
-                                                            var val = Math.floor($(this).val());
-                                                            $(this).find(".noUi-handle").text(
-                                                                    val + unit
-                                                                    );
-                                                        }
-                                                    });
-                                                    $(my).val(def, true);
-                                                }
-                                                huadong('.slider-minmax1', "分钟", "5", 30);
-                                                huadong('.slider-minmax2', "分钟", "6", 15);
-                                                huadong('.slider-minmax3', "分钟", "10", 60);
-                                                huadong('.slider-minmax4', "次", "2", 10);
-                                                huadong('.slider-minmax5', "天", "3", 7);
-                                                huadong('.slider-minmax6', "天", "8", 10);
+    //min/max slider
+    function huadong(my, unit, def, max) {
+        $(my).noUiSlider({
+            range: [0, max],
+            start: [def],
+            handles: 1,
+            connect: 'upper',
+            slide: function() {
+                var val = Math.floor($(this).val());
+                $(this).find(".noUi-handle").text(
+                        val + unit
+                        );
+                console.log($(this).find(".noUi-handle").parent().parent().html());
+            },
+            set: function() {
+                var val = Math.floor($(this).val());
+                $(this).find(".noUi-handle").text(
+                        val + unit
+                        );
+            }
+        });
+        $(my).val(def, true);
+    }
+    huadong('.slider-minmax1', "分钟", "5", 30);
+    huadong('.slider-minmax2', "分钟", "6", 15);
+    huadong('.slider-minmax3', "分钟", "10", 60);
+    huadong('.slider-minmax4', "次", "2", 10);
+    huadong('.slider-minmax5', "天", "3", 7);
+    huadong('.slider-minmax6', "天", "8", 10);
+    $(function(){
+        let input_josn =[
+          {'type':'text','title':'主标题','name':'title'},
+          {'type':'text','title':'副标题','name':'sub_title'},
+          {'type':'text','title':'地址','name':'position_main'},
+          {'type':'text','title':'详细地址','name':'position_second'},
+          {'type':'text','title':'均价','name':'ave_price'},
+          {'type':'text','title':'最小面积','name':'area_min'},
+          {'type':'text','title':'最大面积','name':'area_max'},
+          {'type':'tel','title':'电话','name':'tel'},
+          {'type':'Date','title':'售房时间','name':'sale_time'},
+          {'type':'Date','title':'交房时间','name':'submit_time'},
+          {'type':'text','title':'房屋类型','name':'buliding_type'},
+          {'type':'file','title':'主展示图','name':'main_img_path', 'accept_type':"image/gif,image/jpeg,image/png"},
+          {'type':'file','title':'轮播图','name':'img_paths' ,'accept_type':"image/gif,image/jpeg,image/png",'multiple':true},
+          {'type':'text','title':'房屋大小类型','name':'property_types'},
+          {'type':'file','title':'房屋结构图','name':'property_img_paths' ,'accept_type':"image/gif,image/jpeg,image/png"},
+        ];
+        var html=""
+        input_josn.forEach(function(json,index){
+          var accept_type = json.type=='file'?`accept=${json.accept_type}`:'';
+          var multiple = json.multiple?'multiple=true':'';
+             html +=`
+              <div class="form-group">
+                <label for="id${index}" class="col-sm-2 col-xs-12 control-label">${json.title}</label>
+                <div class="col-sm-8 col-xs-10">
+                  <input type="${json.type}" class="form-control" id="id${index}" name="${json.name}" placeholder="请填入${json.title}....." ${accept_type} ${multiple}>
+                </div>
+              </div>`;
+        })
+        $("#add_form").html("").html(html);
+    })
 </script>
 </body>
 
