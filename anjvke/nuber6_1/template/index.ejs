@@ -995,7 +995,7 @@
 
                               <div class="col-xs-2">
                                   <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#reviseSchool">修改</a>
-                                  <a href="/admin/delete?id=<%=json.ID%>" onclick="if(confirm('确定删除?')==false)return false;" class="btn btn-danger btn-xs"  >删除</a>
+                                  <a href="/admin/house/delete?id=<%=json.ID%>" onclick="if(confirm('确定删除?')==false)return false;" class="btn btn-danger btn-xs"  >删除</a>
                               </div>
                             <% }); %>
                         </div>
@@ -1939,7 +1939,7 @@
           {'type':'file','title':'主展示图','name':'main_img_path', 'accept_type':"image/gif,image/jpeg,image/png"},
           {'type':'file','title':'轮播图','name':'img_paths' ,'accept_type':"image/gif,image/jpeg,image/png",'multiple':true},
           {'type':'text','title':'房屋大小类型','name':'property_types'},
-          {'type':'file','title':'房屋结构图','name':'property_img_paths' ,'accept_type':"image/gif,image/jpeg,image/png"},
+          {'type':'file','title':'房屋结构图','name':'property_img_paths' ,'accept_type':"image/gif,image/jpeg,image/png",'multiple':true},
         ];
         var html=""
         input_josn.forEach(function(json,index){
