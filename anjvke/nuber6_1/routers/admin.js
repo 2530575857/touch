@@ -97,7 +97,7 @@ admin.post('/login',(req,res)=>{
 admin.get('/',(req,res)=>{
     res.redirect('/admin/house');
 });
-
+//后台主页
 //获取房屋信息
 admin.get('/house',(req,res)=>{
   req.db.query(`SELECT * FROM house_table`,(err,data)=>{
