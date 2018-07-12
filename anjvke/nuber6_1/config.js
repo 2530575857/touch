@@ -6,7 +6,7 @@ module.exports = {
   mysql_host:'localhost',
   mysql_user:'root',
   mysql_password:'qq123456',
-  mysql_data:'an_jv_ke',
+  mysql_data:'anjuke',
 
   //终极管理员
   root_user:'tl',
