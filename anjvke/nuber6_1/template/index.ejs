@@ -945,20 +945,25 @@
 
                 <div class="check-div form-inline">
                     <div class="col-xs-3">
-                        <button class="btn btn-yellow btn-xs" data-toggle="modal" data-target="#addSchool">添加房屋信息</button>
+                        <button class="btn btn-yellow btn-xs" data-toggle="modal" data-target="#addSchool" onclick="elf()">添加房屋信息</button>
                     </div>
+                  <!-- //  查询 -->
+                  <form class="" action="?" method="get">
                     <div class="col-lg-4 col-xs-5">
-                        <input type="text" class=" form-control input-sm " placeholder="输入文字搜索">
-                        <button class="btn btn-white btn-xs ">查 询 </button>
+                        <input type="text" class=" form-control input-sm " name="keywords" placeholder="输入文字搜索" value="<%=search%>">
+                        <button type="submit" class="btn btn-white btn-xs ">查 询 </button>
                     </div>
-                    <div class="col-lg-3 col-lg-offset-1 col-xs-3" style="padding-right: 40px;text-align: right;float: right;">
-                        <label for="paixu">排序:&nbsp;</label>
-                        <select class="form-control">
-                            <option>地区</option>
-                            <option>排名</option>
-                        </select>
-                    </div>
+                  </form>
+
+                  <div class="col-lg-3 col-lg-offset-1 col-xs-3" style="padding-right: 40px;text-align: right;float: right;">
+                      <label for="paixu">排序:&nbsp;</label>
+                      <select class="form-control">
+                          <option>地区</option>
+                          <option>排名</option>
+                      </select>
+                  </div>
                 </div>
+
                 <div class="data-div">
                     <div class="row tableHeader">
                         <div class="col-xs-2 " >
@@ -977,62 +982,61 @@
                             操作
                         </div>
                     </div>
+                    <!-- 内容、 -->
                     <div class="tablebody">
-                        <div class="row">
                             <% data.forEach(json=>{ -%>
-                              <div class="col-xs-2 ">
-                                  <%=json.ID%>
-                              </div>
-                              <div class="col-xs-4">
-                                  <%=json.title%>
-                              </div>
-                              <div class="col-xs-2">
-                                  <%=json.position_main%>/<%=json.position_second%>
-                              </div>
-                              <div class="col-xs-2">
-                                  <%=json.ave_price%>
-                              </div>
-
-                              <div class="col-xs-2">
-                                  <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#reviseSchool">修改</a>
-                                  <a href="/admin/house/delete?id=<%=json.ID%>" onclick="if(confirm('确定删除?')==false)return false;" class="btn btn-danger btn-xs"  >删除</a>
+                              <div class="row">
+                                <div class="col-xs-2 ">
+                                    <%=json.ID%>
+                                </div>
+                                <div class="col-xs-4">
+                                    <%=json.title%>
+                                </div>
+                                <div class="col-xs-2">
+                                    <%=json.position_main%>/<%=json.position_second%>
+                                </div>
+                                <div class="col-xs-2">
+                                    <%=json.ave_price%>
+                                </div>
+                                <div class="col-xs-2">
+                                    <a class="btn btn-success btn-xs" data-toggle="modal" onclick="modification('<%=json.ID%>',true)">修改</a>
+                                    <a href="/admin/house/delete?id=<%=json.ID%>" onclick="if(confirm('确定删除?')==false)return false;" class="btn btn-danger btn-xs"  >删除</a>
+                                </div>
                               </div>
                             <% }); %>
-                        </div>
-
                     </div>
 
                 </div>
-                <!--页码块-->
+                <!--分页-->
                 <footer class="footer">
-                    <ul class="pagination">
+                    <nav aria-label="Page navigation">
+                      <ul class="pagination">
                         <li>
-                            <select>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                                <option>7</option>
-                                <option>8</option>
-                                <option>9</option>
-                                <option>10</option>
-                            </select>
-                            页
+                          <a href="#" aria-label="Previous" style="color:#000;border:1px solid #000">
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
                         </li>
-                        <li class="gray">
-                            共20页
-                        </li>
+                        <%
+                        let page =cur_page-(show_page_count-1)/2<1?1:cur_page-(show_page_count-1)/2;
+                        let end =cur_page+(show_page_count-1)/2;
+                        if(end>=total_page){
+                          end=total_page;
+                        }
+                        for(page ;page<=end;page++){%>
+                          <%if(cur_page==page){%>
+                            <li><a href="?page=<%=page%>" style="color:#000;border:1px solid #000;background:#16a085">[<%=page%>]</a></li>
+                          <%}else{%>
+                            <li><a href="?page=<%=page%>" style="color:#000;border:1px solid #000"><%=page%></a></li>
+                          <%}%>
+                        <%}%>
+
                         <li>
-                            <i class="glyphicon glyphicon-menu-left">
-                            </i>
+                          <a href="#" aria-label="Next" style="color:#000;border:1px solid #000">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
                         </li>
-                        <li>
-                            <i class="glyphicon glyphicon-menu-right">
-                            </i>
-                        </li>
-                    </ul>
+                      </ul>
+                    </nav>
                 </footer>
 
                 <!--弹出添加用户窗口-->
@@ -1048,7 +1052,6 @@
                                 <div class="container-fluid ">
                                   <form class="form-horizontal" id="add_form" method="post" action="/admin/house"  enctype="multipart/form-data" >
                                       <!-- 房屋信息添加修改 -->
-
                                   </form>
                                 </div>
 
@@ -1894,6 +1897,57 @@
 
 <!-- this page specific inline scripts -->
 <script>
+
+    //  修改
+    function modification(id,s) {
+      $.ajax({
+         type: "post",
+         url: "/admin/house",
+         data: {modification:s,id},
+         dataType: "json",
+         success: function(data){
+           elf()
+           $('#addSchool').modal('show');
+         },
+         error:function () {
+           alert("请求失败")
+         }
+         });
+
+    }
+    function elf(s,id) {
+      let input_josn =[
+        {'type':'text','title':'主标题','name':'title'},
+        {'type':'text','title':'副标题','name':'sub_title'},
+        {'type':'text','title':'地址','name':'position_main'},
+        {'type':'text','title':'详细地址','name':'position_second'},
+        {'type':'text','title':'均价','name':'ave_price'},
+        {'type':'text','title':'最小面积','name':'area_min'},
+        {'type':'text','title':'最大面积','name':'area_max'},
+        {'type':'tel','title':'电话','name':'tel'},
+        {'type':'Date','title':'售房时间','name':'sale_time'},
+        {'type':'Date','title':'交房时间','name':'submit_time'},
+        {'type':'text','title':'房屋类型','name':'building_type'},
+        {'type':'file','title':'主展示图','name':'main_img_path', 'accept_type':"image/gif,image/jpeg,image/png"},
+        {'type':'file','title':'轮播图','name':'img_paths' ,'accept_type':"image/gif,image/jpeg,image/png",'multiple':true},
+        {'type':'text','title':'房屋大小类型','name':'property_types'},
+        {'type':'file','title':'房屋结构图','name':'property_img_paths' ,'accept_type':"image/gif,image/jpeg,image/png",'multiple':true},
+      ];
+      var html=""
+      input_josn.forEach(function(json,index){
+        var accept_type = json.type=='file'?`accept=${json.accept_type}`:'';
+        var multiple = json.multiple?'multiple=true':'';
+           html +=`
+            <div class="form-group">
+              <label for="id${index}" class="col-sm-2 col-xs-12 control-label">${json.title}</label>
+              <div class="col-sm-8 col-xs-10">
+                <input type="${json.type}" class="form-control" id="id${index}" name="${json.name}" placeholder="请填入${json.title}....." ${accept_type} ${multiple}>
+              </div>
+            </div>`;
+      })
+
+      $("#add_form").html("").html(html);
+    }
     //min/max slider
     function huadong(my, unit, def, max) {
         $(my).noUiSlider({
@@ -1923,38 +1977,7 @@
     huadong('.slider-minmax4', "次", "2", 10);
     huadong('.slider-minmax5', "天", "3", 7);
     huadong('.slider-minmax6', "天", "8", 10);
-    $(function(){
-        let input_josn =[
-          {'type':'text','title':'主标题','name':'title'},
-          {'type':'text','title':'副标题','name':'sub_title'},
-          {'type':'text','title':'地址','name':'position_main'},
-          {'type':'text','title':'详细地址','name':'position_second'},
-          {'type':'text','title':'均价','name':'ave_price'},
-          {'type':'text','title':'最小面积','name':'area_min'},
-          {'type':'text','title':'最大面积','name':'area_max'},
-          {'type':'tel','title':'电话','name':'tel'},
-          {'type':'Date','title':'售房时间','name':'sale_time'},
-          {'type':'Date','title':'交房时间','name':'submit_time'},
-          {'type':'text','title':'房屋类型','name':'building_type'},
-          {'type':'file','title':'主展示图','name':'main_img_path', 'accept_type':"image/gif,image/jpeg,image/png"},
-          {'type':'file','title':'轮播图','name':'img_paths' ,'accept_type':"image/gif,image/jpeg,image/png",'multiple':true},
-          {'type':'text','title':'房屋大小类型','name':'property_types'},
-          {'type':'file','title':'房屋结构图','name':'property_img_paths' ,'accept_type':"image/gif,image/jpeg,image/png",'multiple':true},
-        ];
-        var html=""
-        input_josn.forEach(function(json,index){
-          var accept_type = json.type=='file'?`accept=${json.accept_type}`:'';
-          var multiple = json.multiple?'multiple=true':'';
-             html +=`
-              <div class="form-group">
-                <label for="id${index}" class="col-sm-2 col-xs-12 control-label">${json.title}</label>
-                <div class="col-sm-8 col-xs-10">
-                  <input type="${json.type}" class="form-control" id="id${index}" name="${json.name}" placeholder="请填入${json.title}....." ${accept_type} ${multiple}>
-                </div>
-              </div>`;
-        })
-        $("#add_form").html("").html(html);
-    })
+
 </script>
 </body>
 

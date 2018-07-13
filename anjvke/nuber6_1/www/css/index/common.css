@@ -12,7 +12,7 @@ body {
 #wrap {
 	min-width: 100%;
 	position: absolute;
-	background: #eff3f6 bottom;
+	background: #eee bottom;
 	min-height: 100%;
 	overflow: hidden;
 }
