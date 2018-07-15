@@ -945,7 +945,7 @@
 
                 <div class="check-div form-inline">
                     <div class="col-xs-3">
-                        <button class="btn btn-yellow btn-xs" data-toggle="modal" data-target="#addSchool" onclick="elf()">添加房屋信息</button>
+                        <button class="btn btn-yellow btn-xs" data-toggle="modal" data-target="#addSchool" onclick="elf({},'false')">添加房屋信息</button>
                     </div>
                   <!-- //  查询 -->
                   <form class="" action="?" method="get">
@@ -999,7 +999,7 @@
                                     <%=json.ave_price%>
                                 </div>
                                 <div class="col-xs-2">
-                                    <a class="btn btn-success btn-xs" data-toggle="modal" onclick="modification('<%=json.ID%>',true)">修改</a>
+                                    <a class="btn btn-success btn-xs" data-toggle="modal" onclick="modification('<%=json.ID%>','true')">修改</a>
                                     <a href="/admin/house/delete?id=<%=json.ID%>" onclick="if(confirm('确定删除?')==false)return false;" class="btn btn-danger btn-xs"  >删除</a>
                                 </div>
                               </div>
@@ -1901,21 +1901,20 @@
     //  修改
     function modification(id,s) {
       $.ajax({
-         type: "post",
-         url: "/admin/house",
-         data: {modification:s,id},
+         url: "/admin/house/alter",
+         data: {id},
+         type: "get",
          dataType: "json",
          success: function(data){
-           elf()
+           elf(data,s)
            $('#addSchool').modal('show');
          },
          error:function () {
            alert("请求失败")
          }
          });
-
     }
-    function elf(s,id) {
+    function elf(data={},s) {
       let input_josn =[
         {'type':'text','title':'主标题','name':'title'},
         {'type':'text','title':'副标题','name':'sub_title'},
@@ -1937,17 +1936,35 @@
       input_josn.forEach(function(json,index){
         var accept_type = json.type=='file'?`accept=${json.accept_type}`:'';
         var multiple = json.multiple?'multiple=true':'';
+        let val_data ='';
+        if(json.type=='Date'){
+          let time=new Date(data[json.name]*1000);
+          let M =time.getMonth()+1;//月
+          if(M<10){
+              M ='0'+time.getMonth();
+          }
+          let D =time.getDate();//日
+          if(D<10){
+              D ='0'+time.getDate();
+          }
+          val_data=time.getFullYear()+'-'+M+'-'+D;
+        }else {
+          val_data=(data[json.name]||"");
+        };
            html +=`
             <div class="form-group">
               <label for="id${index}" class="col-sm-2 col-xs-12 control-label">${json.title}</label>
               <div class="col-sm-8 col-xs-10">
-                <input type="${json.type}" class="form-control" id="id${index}" name="${json.name}" placeholder="请填入${json.title}....." ${accept_type} ${multiple}>
+                <input type="${json.type}" class="form-control" id="id${index}" name="${json.name}" placeholder="请填入${json.title}....." ${accept_type} ${multiple} value='${val_data}'>
               </div>
             </div>`;
-      })
+      });
+      if(s){
+        html +=`<input type="hidden" name="id" value="${data['ID']}"/><input type="hidden" name="alter" value="${s}"/>`
+      };
 
       $("#add_form").html("").html(html);
-    }
+    }//form精灵
     //min/max slider
     function huadong(my, unit, def, max) {
         $(my).noUiSlider({

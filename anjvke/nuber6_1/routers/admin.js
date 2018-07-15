@@ -129,7 +129,8 @@ admin.get('/house',(req,res)=>{
           console.log("数据库查询错误");
         }else {
           res.render('index',{
-            data,cur_page:parseInt(pageing),
+            data,
+            cur_page:parseInt(pageing),
             total_page:Math.ceil(page[0].s/nunber),
             show_page_count:9,
             search:req.query.keywords
@@ -143,13 +144,34 @@ admin.get('/house',(req,res)=>{
 });
 //添加房屋信息
 admin.post('/house',(req,res)=>{
+  req.body['sale_time'] =Math.floor(new Date(req.body['sale_time']).getTime()/1000);
+  req.body['submit_time'] =Math.floor(new Date(req.body['submit_time']).getTime()/1000);
+
+  if(req.body.alter){
+    let data =req.body;
+    if(!data.id){
+      res.sendStatus(404);
+    }else if (!/^[\d a-f]{32}$/.test(data.id)) {
+      res.sendStatus(404);
+    }else {
+      let arr =['title','sub_title','position_main','position_second','ave_price','area_min','area_max','tel','sale_time','submit_time','building_type','property_types'];//可修改字段
+      let arr_val=arr.map(itam=>`${itam}='${data[itam]}'`);
+      let sql=`UPDATE house_table SET ${arr_val.join(',')} WHERE ID ='${data.id}'`;
+      req.db.query(sql,err=>{
+        if(err){
+          res.sendStatus(500);
+          console.log('修改错误');
+        }else {
+          res.redirect('/admin/house');
+        }
+      })
+    }
+  }else {
     let img_paths =[];
     let img_real_paths=[];
     let property_img_paths=[];
     let property_img_real_paths=[];
 
-    req.body['sale_time'] =Math.floor(new Date(req.body['sale_time']).getTime()/1000);
-    req.body['submit_time'] =Math.floor(new Date(req.body['submit_time']).getTime()/1000);
     req.files.forEach(json=>{
       switch(json.fieldname){
         case 'main_img_path':
@@ -189,9 +211,9 @@ admin.post('/house',(req,res)=>{
           res.redirect('/admin/house');
       }
     })
+  }
 
 })
-
 //删除房源信息
 admin.get('/house/delete',(req,res)=>{
   //删除资源文件
@@ -242,4 +264,25 @@ admin.get('/house/delete',(req,res)=>{
 
   })
 
+})
+
+//修改房源信息
+admin.get('/house/alter',(req,res)=>{
+    let data_id =req.query.id;
+    if(!data_id){
+      res.sendStatus(404);
+    }else if (!/^[\d a-f]{32}$/.test(data_id)) {
+      res.sendStatus(404);
+    }else {
+      req.db.query(`SELECT * FROM house_table WHERE ID='${data_id}'`,(err,data)=>{
+        if(err){
+          res.sendStatus(500);
+          console.log("查询错误");
+        }else if (data.length==0) {
+          res.sendStatus(404);
+        }else {
+          res.send(data[0]);
+        }
+      })
+    }
 })
