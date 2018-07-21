@@ -97,9 +97,25 @@ admin.post('/login',(req,res)=>{
 admin.get('/',(req,res)=>{
     res.redirect('/admin/house');
 });
+
+
+//重用部分
+
 //后台主页
 //获取房屋信息
-admin.get('/house',(req,res)=>{
+admin.get('/:house',(req,res)=>{
+  const {house} =req.params;
+  let shou_arr=config[`shou_in_admin_${house}`];//得到要显示的名称和字段
+  if(!shou_arr){
+    res.sendStatus(404);
+  }
+  let shouName=[];
+  let shouJsonName={};
+  shou_arr.split(',').forEach(itam=>{//解析规定的显示字段
+    let [may,val] = itam.split(':');
+    shouName.push(may);
+    shouJsonName[may]=val;
+  });
   //分页
   let nunber=9;
   let pageing =req.query.page;//当前页
@@ -110,20 +126,21 @@ admin.get('/house',(req,res)=>{
   }
   let kais =(pageing-1)*nunber;//页码
 
+
+
   //查询
   let link_seg="1=1"
   if(req.query.keywords){
     let keys =req.query.keywords.split(/\s+/g);
     link_seg =keys.map(itam=>`title LIKE '%${itam}%'`).join(' OR ')
   };
-
-  req.db.query(`SELECT * FROM house_table WHERE ${link_seg} LIMIT ${kais},${nunber}`,(err,data)=>{
+// ${shouName.join(',')}
+  req.db.query(`SELECT ${shouName.join(',')} FROM ${house}_table WHERE ${link_seg} LIMIT ${kais},${nunber}`,(err,data)=>{
     if(err){
       res.sendStatus(500);
       console.log("数据库查询错误");
     }else {
-
-      req.db.query(`SELECT COUNT(*) AS s FROM house_table WHERE ${link_seg}`,(err,page)=>{
+      req.db.query(`SELECT COUNT(*) AS s FROM ${house}_table WHERE ${link_seg}`,(err,page)=>{
         if(err){
           res.sendStatus(500);
           console.log("数据库查询错误");
@@ -133,7 +150,8 @@ admin.get('/house',(req,res)=>{
             cur_page:parseInt(pageing),
             total_page:Math.ceil(page[0].s/nunber),
             show_page_count:9,
-            search:req.query.keywords
+            search:req.query.keywords,
+            shouJsonName
           });
         }
       })

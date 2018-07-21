@@ -963,21 +963,16 @@
                       </select>
                   </div>
                 </div>
-
+                <!-- 页头名称 -->
                 <div class="data-div">
                     <div class="row tableHeader">
-                        <div class="col-xs-2 " >
-                            ID
-                        </div>
-                        <div class="col-xs-4 ">
-                            名称
-                        </div>
-                        <div class="col-xs-2">
-                            地址
-                        </div>
-                        <div class="col-xs-2">
-                            价格
-                        </div>
+                        <%
+                        for(let name in shouJsonName){
+                        <!-- if(name=='ID')continue -->
+                          %>
+                            <div class="col-xs-2"> <%=shouJsonName[name]%> </div>
+                        <%}%>
+
                         <div class="col-xs-2">
                             操作
                         </div>
@@ -985,19 +980,14 @@
                     <!-- 内容、 -->
                     <div class="tablebody">
                             <% data.forEach(json=>{ -%>
-                              <div class="row">
-                                <div class="col-xs-2 ">
-                                    <%=json.ID%>
-                                </div>
-                                <div class="col-xs-4">
-                                    <%=json.title%>
-                                </div>
-                                <div class="col-xs-2">
-                                    <%=json.position_main%>/<%=json.position_second%>
-                                </div>
-                                <div class="col-xs-2">
-                                    <%=json.ave_price%>
-                                </div>
+                              <div class="col-md-12 col-lg-12 col-sm-12" style="padding:20px 0;background:#fff;margin-bottom: 10px;">
+                                <%
+                                for(let name in shouJsonName){
+                                  %>
+                                  <div class="col-xs-2">
+                                      <%=json[name]%>
+                                  </div>
+                                <%}%>
                                 <div class="col-xs-2">
                                     <a class="btn btn-success btn-xs" data-toggle="modal" onclick="modification('<%=json.ID%>','true')">修改</a>
                                     <a href="/admin/house/delete?id=<%=json.ID%>" onclick="if(confirm('确定删除?')==false)return false;" class="btn btn-danger btn-xs"  >删除</a>
